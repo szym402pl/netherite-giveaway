@@ -14,6 +14,7 @@ public final class NetheriteGiveaway extends JavaPlugin {
 
     private ConfigManager configManager;
     private ItemStackManager itemStackManager;
+    private NetheriteGUI netheriteGUI;
 
     @Override
     public void onEnable() {
@@ -21,9 +22,10 @@ public final class NetheriteGiveaway extends JavaPlugin {
 
         configManager = new ConfigManager(this);
         itemStackManager = new ItemStackManager(this, configManager);
+        netheriteGUI = new NetheriteGUI(configManager, itemStackManager);
 
         getCommand("netherite").setExecutor(new NetheriteCommand
-                (new NetheriteGUI(configManager, itemStackManager), itemStackManager, configManager));
+                (netheriteGUI, itemStackManager, configManager));
         getCommand("netherite").setTabCompleter(new NetheriteCMDTabCompleter());
 
         Bukkit.getPluginManager().registerEvents(new InventoryCloseListener(), this);

@@ -1,5 +1,6 @@
 # The item names must be uppercase since it's a Material
 # Search up Spigot API Material class for names of items
+# Please read the entire config, it's just an example one
 
 # Made by XiaoJibaZhanshi
 
@@ -8,25 +9,26 @@ netherite-command:
   no-perms-message: "&cNuh uh. No permission."
   personal-giveaway-message: "&aYou've received a maxed netherite item!"
   global-giveaway-message: "&a&l[Giveaway] &c{count} &aplayers have received a maxed netherite item!" # Put on "empty" if you want to disable this
-  sound: true
+  sound: true # just a level up sound, it's fun please don't turn it off :(
 
 giveaway-items:
   1:
     NETHERITE_HELMET:
+      hide-enchants: false
+      hide-attributes: true
       display-name: "&cYou don't to set the name"
-      enchants:
+      enchants: # nor the enchants, hide-something, nor lore
         PROTECTION: 4
         UNBREAKING: 3
-        DEPTH_STRIDER: 3
         MENDING: 1
       lore:
+        - ""
         - "&aJust a normal maxed"
         - "&anetherite helmet."
-        - ""
-        - "&7The lore isn't"
-        - "&7needed either"
   2:
     NETHERITE_CHESTPLATE:
+      hide-enchants: true
+      hide-attributes: false
       display-name: "&cThe items will be drawn randomly"
       enchants:
         PROTECTION: 4
@@ -40,7 +42,7 @@ netherite-gui:
   sort-by: itemcount # Here you can put alphabetically or itemcount
   size: 27 # Size has to be in increments of 9
   filler-material: BARRIER # I also recommend GRAY_STAINED_GLASS_PANE
-  name: "&cMaxed item owners               &7Xiao on top"
+  name: "&cMaxed item owners                   &7Xiao on top"
   head-lore:
     - "&aThis player has &c{maxed-items}"
     - "&amaxed items in his inventory."

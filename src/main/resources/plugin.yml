@@ -1,6 +1,6 @@
 name: NetheriteGiveaway
 version: '1'
-main: me.xiaojibazhanshi.netheriteGiveaway.NetheriteGiveaway
+main: me.xiaojibazhanshi.netheritegiveaway.NetheriteGiveaway
 api-version: '1.21'
 authors: [ XiaoJibaZhanshi ]
 description: One of the ways to do a giveaway on your server

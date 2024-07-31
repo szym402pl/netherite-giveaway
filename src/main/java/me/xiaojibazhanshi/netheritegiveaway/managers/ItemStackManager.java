@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -35,6 +36,7 @@ public class ItemStackManager {
     public ArrayList<ItemStack> getItemsFromConfig() {
         ArrayList<ItemStack> items = new ArrayList<>();
         ConfigurationSection itemsSection = configManager.getItemsSection();
+        int count = 0;
 
         for (String key : itemsSection.getKeys(false)) {
             ConfigurationSection itemSection = itemsSection.getConfigurationSection(key);
@@ -64,37 +66,46 @@ public class ItemStackManager {
     private ItemStack createItemStack(ConfigurationSection section) {
         String materialName = section.getKeys(false).iterator().next();
         Material material = Material.valueOf(materialName);
+
         ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
+        assert meta != null;
 
-        if (meta != null) {
+        section = section.getConfigurationSection(materialName);
 
-            if (section.contains("display-name")) {
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes
-                        ('&', section.getString("display-name")));
-            }
-
-            if (section.contains("lore")) {
-                List<String> lore = section.getStringList("lore").stream()
-                        .map(line -> ChatColor.translateAlternateColorCodes('&', line))
-                        .collect(Collectors.toList());
-
-                meta.setLore(lore);
-            }
-
-            if (section.contains("enchants")) {
-                ConfigurationSection enchantsSection = section.getConfigurationSection("enchants");
-
-                for (String enchant : enchantsSection.getKeys(false)) {
-                    meta.addEnchant(Enchantment.getByName(enchant), enchantsSection.getInt(enchant), true);
-                }
-            }
-
-            PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
-            dataContainer.set(persistentDataKey, PersistentDataType.STRING, "maxed_item_data");
-
-            itemStack.setItemMeta(meta);
+        if (section.contains("hide-enchants") && section.getBoolean("hide-enchants")) {
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
+
+        if (section.contains("hide-attributes") && section.getBoolean("hide-attributes")) {
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        }
+
+        if (section.contains("display-name")) {
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes
+                    ('&', section.getString("display-name")));
+        }
+
+        if (section.contains("lore")) {
+            List<String> lore = section.getStringList("lore").stream()
+                    .map(line -> ChatColor.translateAlternateColorCodes('&', line))
+                    .collect(Collectors.toList());
+
+            meta.setLore(lore);
+        }
+
+        if (section.contains("enchants")) {
+            ConfigurationSection enchantsSection = section.getConfigurationSection("enchants");
+
+            for (String enchant : enchantsSection.getKeys(false)) {
+                meta.addEnchant(Enchantment.getByName(enchant), enchantsSection.getInt(enchant), true);
+            }
+        }
+
+        PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
+        dataContainer.set(persistentDataKey, PersistentDataType.STRING, "maxed_item_data");
+
+        itemStack.setItemMeta(meta);
 
         return itemStack;
     }

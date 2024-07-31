@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class NetheriteCommand implements CommandExecutor {
 
@@ -58,20 +59,23 @@ public class NetheriteCommand implements CommandExecutor {
                 ArrayList<ItemStack> itemList = itemStackManager.getItemsFromConfig();
                 ArrayList<Player> playerList = new ArrayList<>(Bukkit.getOnlinePlayers());
 
+                Collections.shuffle(itemList);
+                Collections.shuffle(playerList);
+
                 int minIndex = Math.min(itemList.size(), playerList.size());
-                String globalMessage = section.getString("global-giveaway-message");
+                String globalMessage = ChatColor.translateAlternateColorCodes
+                        ('&', section.getString("global-giveaway-message"));
 
-                if (!globalMessage.equalsIgnoreCase("empty")) {
-                    Bukkit.broadcastMessage(globalMessage);
-                }
-
+                int count = 0;
                 for (int i = 0; i < minIndex; i++) {
+                    count++;
                     Player target = playerList.get(i);
                     ItemStack item = itemList.get(i);
 
                     boolean fullInventory = target.getInventory().firstEmpty() == -1;
 
-                    target.sendMessage(section.getString("personal-giveaway-message"));
+                    target.sendMessage(ChatColor.translateAlternateColorCodes
+                            ('&', section.getString("personal-giveaway-message")));
 
                     if (section.getBoolean("sound"))
                         target.playSound(target, Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
@@ -83,6 +87,10 @@ public class NetheriteCommand implements CommandExecutor {
                     } else {
                         target.getInventory().addItem(item);
                     }
+                }
+
+                if (!globalMessage.equalsIgnoreCase("empty")) {
+                    Bukkit.broadcastMessage(globalMessage.replace("{count}", String.valueOf(count)));
                 }
             }
 

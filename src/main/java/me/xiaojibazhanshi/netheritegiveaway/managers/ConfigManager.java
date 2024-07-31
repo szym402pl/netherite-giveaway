@@ -31,7 +31,8 @@ public class ConfigManager {
         netheriteGUISize = config.getInt("netherite-gui.size");
         fillerMaterial = Material.valueOf(config.getString("netherite-gui.filler-material"));
         itemsSection = config.getConfigurationSection("giveaway-items");
-        netheriteGUIName = ChatColor.translateAlternateColorCodes('&', config.getString("netherite-gui.name"));
+        netheriteGUIName = ChatColor.translateAlternateColorCodes
+                ('&', config.getString("netherite-gui.name"));
         headLore = config.getStringList("netherite-gui.head-lore").stream()
                 .map(line -> ChatColor.translateAlternateColorCodes('&', line))
                 .collect(Collectors.toList());

@@ -18,6 +18,7 @@ public class NetheriteGUI {
     public NetheriteGUI(ConfigManager configManager, ItemStackManager itemStackManager) {
         this.configManager = configManager;
         this.itemStackManager = itemStackManager;
+        playersWithGUIOpened = new ArrayList<>();
     }
 
     public Inventory getNetheriteGUI() {
